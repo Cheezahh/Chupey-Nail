@@ -1,4 +1,4 @@
-import type { SVGProps } from "react";
+import { useId, type SVGProps } from "react";
 
 /**
  * Five-petal white blossom matching the logo illustration.
@@ -9,7 +9,8 @@ export function Blossom({
   className,
   ...rest
 }: { size?: number } & SVGProps<SVGSVGElement>) {
-  const id = "bl" + Math.round(size);
+  // Unique per instance and stable across SSR/hydration; stripped to [a-z0-9] so it is safe inside url(#…).
+  const id = "bl" + useId().replace(/[^a-zA-Z0-9]/g, "");
   return (
     <svg
       width={size}

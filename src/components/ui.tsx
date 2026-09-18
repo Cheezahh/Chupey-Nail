@@ -69,7 +69,7 @@ export function Badge({ children, tone = "sky" }: { children: ReactNode; tone?: 
 
 export function PlaceholderNote({ children }: { children: ReactNode }) {
   return (
-    <p className="rounded-xl border border-dashed border-navy-500/40 bg-sky-50 px-4 py-3 text-xs text-navy-600">
+    <p className="rounded-xl border border-dashed border-navy-500/40 bg-sky-50 px-4 py-3 text-xs text-navy-600 max-sm:text-sm">
       <span className="font-semibold">Placeholder:</span> {children}
     </p>
   );

@@ -13,6 +13,8 @@ export const metadata: Metadata = {
   description: "Three tiers of hand-made press-on nails — Essential, Signature and Couture. Shipped Canada-wide from Toronto.",
 };
 
+const inTheBox = "10 nails · file & buffer · cuticle stick · alcohol wipe · adhesive tabs · glue · care card";
+
 export default function ShopPage() {
   const jsonld = allProductJsonLd();
   return (
@@ -49,7 +51,26 @@ export default function ShopPage() {
             <Eyebrow>Included with every tier</Eyebrow>
             <Heading>Same craft, same care.</Heading>
           </Reveal>
-          <Reveal delay={100} className="mt-10 overflow-x-auto rounded-3xl bg-white shadow-soft ring-1 ring-navy-800/8">
+          {/* Phones: stacked list (label above chips). md+: the original table. */}
+          <Reveal delay={100} className="mt-10 divide-y divide-navy-800/10 rounded-3xl bg-white shadow-soft ring-1 ring-navy-800/8 md:hidden">
+            {optionGroups.map((g) => (
+              <div key={g.id} className="p-5">
+                <p className="font-display text-xl text-navy-800">{g.label}</p>
+                <div className="mt-2 flex flex-wrap gap-1.5">
+                  {g.options.map((o) => (
+                    <span key={o.value} className="rounded-full bg-sky-100 px-2.5 py-1 text-sm font-medium text-navy-700">
+                      {o.label}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+            <div className="p-5">
+              <p className="font-display text-xl text-navy-800">In the box</p>
+              <p className="mt-2 text-base text-navy-700">{inTheBox}</p>
+            </div>
+          </Reveal>
+          <Reveal delay={100} className="mt-10 hidden overflow-x-auto rounded-3xl bg-white shadow-soft ring-1 ring-navy-800/8 md:block">
             <table className="w-full min-w-[560px] text-sm">
               <thead>
                 <tr className="border-b border-navy-800/10 text-left">
@@ -74,7 +95,7 @@ export default function ShopPage() {
                 ))}
                 <tr>
                   <td className="p-5 font-display text-xl text-navy-800">In the box</td>
-                  <td className="p-5 text-navy-700">10 nails · file &amp; buffer · cuticle stick · alcohol wipe · adhesive tabs · glue · care card</td>
+                  <td className="p-5 text-navy-700">{inTheBox}</td>
                 </tr>
               </tbody>
             </table>

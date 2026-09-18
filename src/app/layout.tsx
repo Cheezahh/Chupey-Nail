@@ -54,6 +54,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en-CA" className={`${display.variable} ${sans.variable} h-full`}>
       <body className="flex min-h-full flex-col">
+        {/* Without JS the reveal-on-scroll classes would leave content invisible. */}
+        <noscript>
+          <style>{`.reveal{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd()) }}

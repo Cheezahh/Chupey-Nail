@@ -62,7 +62,7 @@ export function SizingGuide() {
                   placeholder="0.0"
                   value={v}
                   onChange={(e) => setMm((m) => ({ ...m, [key(f)]: e.target.value.replace(/[^\d.]/g, "") }))}
-                  className="w-full bg-transparent font-display text-3xl text-navy-800 outline-none placeholder:text-navy-800/20"
+                  className="min-h-11 w-full bg-transparent font-display text-3xl text-navy-800 outline-none placeholder:text-navy-800/20"
                   aria-label={`${hand} ${f} width in millimetres`}
                 />
                 <span className="text-xs text-navy-500">mm</span>

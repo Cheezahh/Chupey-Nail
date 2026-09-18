@@ -32,7 +32,7 @@ export function Nav() {
       }`}
     >
       <nav className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4 sm:h-20 sm:px-8" aria-label="Main">
-        <Link href="/" className="group flex items-center gap-2" aria-label={`${site.name} home`}>
+        <Link href="/" className="group flex min-h-11 items-center gap-2" aria-label={`${site.name} home`}>
           <Blossom size={40} className="transition-transform duration-500 group-hover:rotate-12" />
           <span className="font-display text-2xl font-medium leading-none text-navy-800">{site.name}</span>
         </Link>
@@ -43,7 +43,7 @@ export function Nav() {
               <Link
                 href={l.href}
                 aria-current={pathname.startsWith(l.href) ? "page" : undefined}
-                className="link-underline flex items-center gap-1.5 text-sm font-semibold text-navy-800"
+                className="link-underline flex items-center gap-1.5 whitespace-nowrap text-sm font-semibold text-navy-800"
               >
                 {l.label}
                 {l.badge && (

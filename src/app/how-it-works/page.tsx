@@ -41,7 +41,7 @@ export default function HowItWorks() {
                 <Blossom size={120} className="absolute -right-8 -top-8 opacity-30 transition-transform duration-700 group-hover:rotate-12" />
                 <span className="font-display text-5xl text-sky-500">0{i + 1}</span>
                 <h2 className="mt-2 font-display text-3xl font-medium text-navy-800">{s.title}</h2>
-                <p className="mt-2 text-sm leading-relaxed text-navy-700">{s.body}</p>
+                <p className="mt-2 text-sm leading-relaxed text-navy-700 max-sm:text-base">{s.body}</p>
               </Reveal>
             ))}
           </ol>
@@ -78,7 +78,7 @@ export default function HowItWorks() {
               {apply.map((a, i) => (
                 <li key={a} className="flex gap-4 rounded-2xl bg-white p-5 shadow-soft ring-1 ring-navy-800/8">
                   <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-sky-200 font-display text-lg text-navy-800">{i + 1}</span>
-                  <p className="text-sm leading-relaxed text-navy-700">{a}</p>
+                  <p className="text-sm leading-relaxed text-navy-700 max-sm:text-base">{a}</p>
                 </li>
               ))}
             </ol>

@@ -9,7 +9,7 @@ export function PageHero({ eyebrow, title, children }: { eyebrow: string; title:
   return (
     <section className="relative -mt-16 overflow-hidden bg-sky-wash pt-16 sm:-mt-20 sm:pt-20">
       <PetalField count={8} />
-      <Branch className="absolute right-0 top-24 hidden md:block" flip scale={0.85} />
+      <Branch className="absolute top-24 hidden lg:-right-12 lg:block xl:right-0" flip scale={0.85} />
       <Container className="relative py-16 sm:py-24">
         <Reveal>
           <Eyebrow className="text-navy-700">{eyebrow}</Eyebrow>

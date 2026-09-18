@@ -88,7 +88,7 @@ export function OrderForm({ initialTier }: { initialTier?: string }) {
               <Input name="sizes" label="Your 10 sizes (left thumb → right pinky)" placeholder="e.g. 3 6 5 5 8  3 6 5 5 8" required />
             )}
             {g.id === "sizing" && opts.sizing === "measure" && (
-              <p className="mt-3 text-xs text-navy-600">
+              <p className="mt-3 text-xs text-navy-600 max-sm:text-sm">
                 Use the <a href="/how-it-works#sizing" className="underline">sizing guide</a> and paste your size string below, or leave it and we&apos;ll walk you through it.
               </p>
             )}
@@ -123,10 +123,10 @@ export function OrderForm({ initialTier }: { initialTier?: string }) {
           {fulfil === "ship" ? (
             <Input name="city" label="City & postal code (for a shipping quote)" placeholder="Markham, L3R" required />
           ) : (
-            <p className="mt-3 text-xs text-navy-600">Pickup around {site.base.city}/Markham — we&apos;ll arrange a spot by message.</p>
+            <p className="mt-3 text-xs text-navy-600 max-sm:text-sm">Pickup around {site.base.city}/Markham — we&apos;ll arrange a spot by message.</p>
           )}
-          <label className="mt-4 flex items-start gap-3 text-xs text-navy-600">
-            <input type="checkbox" name="consent" required className="mt-0.5 h-4 w-4 accent-navy-800" />
+          <label className="mt-4 flex items-start gap-3 text-xs text-navy-600 max-sm:text-sm">
+            <input type="checkbox" name="consent" required className="mt-0.5 h-5 w-5 accent-navy-800" />
             <span>I understand this is an order request: the total is confirmed by email before I pay by Interac e-Transfer.</span>
           </label>
         </Fieldset>
@@ -197,7 +197,7 @@ function MobileSummaryBar({ tierName, price, sending, error }: { tierName: strin
 /* ---------- small form primitives ---------- */
 
 const pill = (on: boolean, extra = "") =>
-  `flex cursor-pointer items-center rounded-2xl ring-1 transition-all duration-300 select-none ${extra} ${
+  `flex cursor-pointer items-center rounded-2xl ring-1 transition-all duration-300 select-none has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-sky-500 ${extra} ${
     on ? "bg-navy-800 text-white ring-navy-800 shadow-soft" : "bg-white text-navy-800 ring-navy-800/15 hover:ring-navy-800/40"
   }`;
 

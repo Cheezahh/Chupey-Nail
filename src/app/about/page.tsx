@@ -32,7 +32,7 @@ export default function AboutPage() {
               <Blossom size={280} className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 animate-float" />
               <span className="absolute left-4 top-4 rounded-full bg-white/70 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-navy-700">Photo coming</span>
             </div>
-            <Image src="/images/brand/logo-square.webp" alt="" width={120} height={120} className="absolute -bottom-6 -right-4 w-28 rounded-full shadow-lift ring-4 ring-white sm:w-32" />
+            <Image src="/images/brand/logo-square.webp" alt="" width={120} height={120} sizes="128px" loading="eager" className="absolute -bottom-6 right-2 w-28 rounded-full shadow-lift ring-4 ring-white sm:-right-4 sm:w-32" />
           </Reveal>
           <Reveal delay={120}>
             <Eyebrow>The story</Eyebrow>
@@ -65,7 +65,7 @@ export default function AboutPage() {
               <Reveal key={v.t} delay={i * 100} className="rounded-3xl bg-white p-7 shadow-soft ring-1 ring-navy-800/8">
                 <Blossom size={40} />
                 <h2 className="mt-4 font-display text-2xl font-medium text-navy-800">{v.t}</h2>
-                <p className="mt-2 text-sm leading-relaxed text-navy-700">{v.b}</p>
+                <p className="mt-2 text-sm leading-relaxed text-navy-700 max-sm:text-base">{v.b}</p>
               </Reveal>
             ))}
           </div>

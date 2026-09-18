@@ -23,7 +23,7 @@ export default function BookPage() {
           <Reveal>
             <Eyebrow>What to expect</Eyebrow>
             <Heading>One artist, your schedule.</Heading>
-            <ul className="mt-6 space-y-4 text-sm leading-relaxed text-navy-700">
+            <ul className="mt-6 space-y-4 text-sm leading-relaxed text-navy-700 max-sm:text-base">
               {[
                 ["Service area", `${site.areaServed.slice(0, 3).join(", ")} to start.`],
                 ["Deposit at booking", "A small deposit holds your slot and keeps the calendar honest."],

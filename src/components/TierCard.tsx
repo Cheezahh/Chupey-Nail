@@ -26,7 +26,7 @@ export function TierCard({ tier, compact = false, withId = true }: { tier: Tier;
           {featured && <Badge tone="sky">Most popular</Badge>}
         </div>
         <h3 className="font-display text-4xl font-medium">{tier.name}</h3>
-        <p className={`mt-1 text-sm ${featured ? "text-sky-200" : "text-navy-500"}`}>{tier.summary}</p>
+        <p className={`mt-1 text-sm max-sm:text-base ${featured ? "text-sky-200" : "text-navy-500"}`}>{tier.summary}</p>
 
         <div className="mt-6 flex items-baseline gap-2">
           <span className="font-display text-5xl font-medium">{money(tier.price)}</span>
@@ -34,9 +34,9 @@ export function TierCard({ tier, compact = false, withId = true }: { tier: Tier;
         </div>
         <p className={`mt-1 text-xs ${featured ? "text-sky-200/80" : "text-navy-500"}`}>{turnaround(tier)}</p>
 
-        {!compact && <p className={`mt-5 text-sm leading-relaxed ${featured ? "text-sky-100/90" : "text-navy-700"}`}>{tier.description}</p>}
+        {!compact && <p className={`mt-5 text-sm leading-relaxed max-sm:text-base ${featured ? "text-sky-100/90" : "text-navy-700"}`}>{tier.description}</p>}
 
-        <ul className="mt-6 space-y-2.5 text-sm">
+        <ul className="mt-6 space-y-2.5 text-sm max-sm:text-base">
           {tier.includes.map((i) => (
             <li key={i} className="flex gap-2.5">
               <svg className={`mt-0.5 h-4 w-4 shrink-0 ${featured ? "text-sky-300" : "text-sky-500"}`} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.2">

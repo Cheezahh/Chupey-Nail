@@ -18,6 +18,12 @@ export function Reveal({
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    // Above the fold on mount: show now rather than waiting for the observer,
+    // so nothing sits invisible if it fired before hydration or never crosses the threshold.
+    if (el.getBoundingClientRect().top < window.innerHeight) {
+      el.classList.add("is-visible");
+      return;
+    }
     const io = new IntersectionObserver(
       ([e]) => {
         if (e.isIntersecting) {

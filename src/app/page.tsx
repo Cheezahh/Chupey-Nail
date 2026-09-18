@@ -98,7 +98,7 @@ export default function Home() {
                 <Reveal key={s.n} as="li" delay={i * 100} className="rounded-3xl bg-white p-6 shadow-soft ring-1 ring-navy-800/8 transition-transform duration-500 hover:-translate-y-1">
                   <span className="font-display text-4xl text-sky-500">{s.n}</span>
                   <h3 className="mt-2 font-display text-2xl font-medium">{s.title}</h3>
-                  <p className="mt-1.5 text-sm leading-relaxed text-navy-700">{s.body}</p>
+                  <p className="mt-1.5 text-sm leading-relaxed text-navy-700 max-sm:text-base">{s.body}</p>
                 </Reveal>
               ))}
             </ol>
@@ -133,10 +133,10 @@ export default function Home() {
             <div className="relative grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
               <div>
                 <Eyebrow className="text-sky-300">Coming soon</Eyebrow>
-                <h2 className="font-display text-4xl font-medium sm:text-5xl">In-person appointments, {site.base.city} &amp; Markham.</h2>
+                <h2 className="text-balance font-display text-3xl font-medium sm:text-4xl md:text-5xl">In-person appointments, {site.base.city} &amp; Markham.</h2>
                 <p className="mt-3 max-w-lg text-sky-100/85">Be first in the chair. Join the waitlist and we&apos;ll email you when booking opens.</p>
               </div>
-              <Button href="/book" variant="sky" size="lg">
+              <Button href="/book" variant="sky" size="lg" className="w-full md:w-auto">
                 Join the waitlist
               </Button>
             </div>

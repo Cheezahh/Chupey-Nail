@@ -10,9 +10,9 @@ export function Footer() {
       <Blossom size={140} className="absolute -bottom-10 left-10 opacity-[0.06]" />
       <div className="relative mx-auto grid w-full max-w-6xl gap-10 px-4 py-10 sm:px-8 md:grid-cols-[1.4fr_1fr_1fr] md:py-16">
         <div>
-          <Image src="/images/brand/logo-banner.webp" alt={site.name} width={260} height={94} className="w-56 rounded-xl" />
-          <p className="mt-4 max-w-sm text-sm leading-relaxed text-sky-200/80">{site.tagline}</p>
-          <p className="mt-2 text-xs text-sky-200/60">
+          <Image src="/images/brand/logo-banner.webp" alt={site.name} width={260} height={94} sizes="224px" loading="eager" className="w-56 rounded-xl" />
+          <p className="mt-4 max-w-sm text-sm leading-relaxed text-sky-200/80 max-sm:text-base">{site.tagline}</p>
+          <p className="mt-2 text-xs text-sky-200/60 max-sm:text-sm">
             Based in {site.base.city}, {site.base.region}. Shipping {site.shipping.regions.toLowerCase()}.
           </p>
         </div>
