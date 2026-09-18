@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { site } from "@/data/site";
 import { Blossom } from "./Blossom";
+import { MobileMenu, type MenuLink } from "./MobileMenu";
 import { Button } from "./ui";
 
-const links = [
+const links: MenuLink[] = [
   { href: "/shop", label: "Shop" },
   { href: "/how-it-works", label: "How it works" },
   { href: "/book", label: "Book", badge: site.bookingLive ? undefined : "Soon" },
@@ -16,7 +17,10 @@ const links = [
 
 export function Nav() {
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
+  // The menu is "open" only for the route it was opened on, so a route change
+  // (link tap, back/forward) closes it with no effect needed.
+  const [openedOn, setOpenedOn] = useState<string | null>(null);
+  const open = openedOn === pathname;
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -25,6 +29,7 @@ export function Nav() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+  const close = useCallback(() => setOpenedOn(null), []);
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => {
@@ -73,8 +78,8 @@ export function Nav() {
           className="relative z-50 flex h-11 w-11 items-center justify-center rounded-full text-navy-800 md:hidden"
           aria-expanded={open}
           aria-controls="mobile-menu"
-          aria-label={open ? "Close menu" : "Open menu"}
-          onClick={() => setOpen((o) => !o)}
+          aria-label="Menu"
+          onClick={() => setOpenedOn(open ? null : pathname)}
         >
           <span className="relative block h-4 w-6">
             <span className={`absolute left-0 top-0 h-0.5 w-6 rounded bg-current transition-transform duration-300 ${open ? "translate-y-[7px] rotate-45" : ""}`} />
@@ -84,36 +89,7 @@ export function Nav() {
         </button>
       </nav>
 
-      {/* Mobile menu */}
-      <div
-        id="mobile-menu"
-        className={`fixed inset-0 z-40 bg-sky-wash transition-all duration-300 md:hidden ${
-          open ? "visible opacity-100" : "invisible opacity-0"
-        }`}
-        aria-hidden={!open}
-      >
-        <div className="flex h-full flex-col justify-center px-8">
-          <ul className="space-y-6">
-            {links.map((l, i) => (
-              <li
-                key={l.href}
-                className={`transition-all duration-500 ${open ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"}`}
-                style={{ transitionDelay: `${80 + i * 60}ms` }}
-              >
-                <Link href={l.href} onClick={() => setOpen(false)} className="font-display text-4xl font-medium text-navy-800">
-                  {l.label}
-                  {l.badge && <span className="ml-3 align-middle rounded-full bg-white/70 px-2 py-0.5 font-sans text-xs uppercase tracking-wider">{l.badge}</span>}
-                </Link>
-              </li>
-            ))}
-          </ul>
-          <div className={`mt-10 transition-all duration-500 ${open ? "opacity-100" : "opacity-0"}`} style={{ transitionDelay: "360ms" }} onClick={() => setOpen(false)}>
-            <Button href="/order" size="lg" className="w-full">
-              Order a set
-            </Button>
-          </div>
-        </div>
-      </div>
+      <MobileMenu open={open} onClose={close} links={links} />
     </header>
   );
 }

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import type { ReactNode } from "react";
 import "./globals.css";
@@ -45,6 +45,9 @@ export const metadata: Metadata = {
   // NOINDEX=1 (Railway → Variables) keeps a demo/staging deploy out of search engines. Remove it at launch.
   ...(process.env.NOINDEX === "1" ? { robots: { index: false, follow: false } } : {}),
 };
+
+/* Lets fixed bottom UI extend under the iOS home indicator; padding uses env(safe-area-inset-bottom). */
+export const viewport: Viewport = { viewportFit: "cover" };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
