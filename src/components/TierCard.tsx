@@ -3,11 +3,11 @@ import { money, turnaround } from "@/lib/format";
 import { Blossom } from "./Blossom";
 import { Badge, Button } from "./ui";
 
-export function TierCard({ tier, compact = false }: { tier: Tier; compact?: boolean }) {
+export function TierCard({ tier, compact = false, withId = true }: { tier: Tier; compact?: boolean; withId?: boolean }) {
   const featured = !!tier.featured;
   return (
     <article
-      id={tier.slug}
+      id={withId ? tier.slug : undefined}
       className={`group relative flex flex-col overflow-hidden rounded-3xl p-7 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-lift ${
         featured ? "bg-navy-800 text-white shadow-lift" : "bg-white text-navy-800 shadow-soft ring-1 ring-navy-800/8"
       }`}

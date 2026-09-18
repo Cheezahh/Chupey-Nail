@@ -3,6 +3,7 @@ import { Gallery } from "@/components/Gallery";
 import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/Reveal";
 import { TierCard } from "@/components/TierCard";
+import { TierCarousel } from "@/components/TierCarousel";
 import { Button, Container, Eyebrow, Heading, PlaceholderNote } from "@/components/ui";
 import { anyPlaceholder, optionGroups, tiers } from "@/data/products";
 import { allProductJsonLd } from "@/lib/jsonld";
@@ -28,7 +29,10 @@ export default function ShopPage() {
               <PlaceholderNote>prices and turnaround are not set yet — the $— values are intentional until the business confirms them.</PlaceholderNote>
             </Reveal>
           )}
-          <div className="grid gap-6 md:grid-cols-3 md:items-start">
+          <Reveal className="md:hidden">
+            <TierCarousel />
+          </Reveal>
+          <div className="hidden gap-6 md:grid md:grid-cols-3 md:items-start">
             {tiers.map((t, i) => (
               <Reveal key={t.slug} delay={i * 120} className={t.featured ? "md:-mt-4" : ""}>
                 <TierCard tier={t} />

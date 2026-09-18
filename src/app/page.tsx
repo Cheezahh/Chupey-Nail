@@ -5,6 +5,7 @@ import { Gallery } from "@/components/Gallery";
 import { PetalField } from "@/components/PetalField";
 import { Reveal } from "@/components/Reveal";
 import { TierCard } from "@/components/TierCard";
+import { TierCarousel } from "@/components/TierCarousel";
 import { FAQ } from "@/components/FAQ";
 import { Button, Container, Eyebrow, Heading, PlaceholderNote } from "@/components/ui";
 import { anyPlaceholder, tiers } from "@/data/products";
@@ -66,7 +67,10 @@ export default function Home() {
               <PlaceholderNote>prices and turnaround are not set yet — the $— values are intentional until the business confirms them.</PlaceholderNote>
             </Reveal>
           )}
-          <div className="mt-12 grid gap-6 md:grid-cols-3 md:items-start">
+          <Reveal className="mt-10 md:hidden">
+            <TierCarousel compact />
+          </Reveal>
+          <div className="mt-12 hidden gap-6 md:grid md:grid-cols-3 md:items-start">
             {tiers.map((t, i) => (
               <Reveal key={t.slug} delay={i * 120} className={t.featured ? "md:-mt-4" : ""}>
                 <TierCard tier={t} compact />
