@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   Chupey Nail — design tokens
+   Palette sampled from the logo: sky #9DDBF8 background, navy #2B4259 text,
+   blossom-centre blue #3B8FD1. White is used for reading surfaces.
+   ------------------------------------------------------------------ */
+@theme {
+  --color-sky-50: #f4fbfe;
+  --color-sky-100: #e3f4fc;
+  --color-sky-200: #c6e9fa;
+  --color-sky-300: #9ddbf8; /* logo background */
+  --color-sky-400: #6fc3ee;
+  --color-sky-500: #3b8fd1; /* blossom centre */
+  --color-navy-500: #4a7397;
+  --color-navy-600: #3a5f7f;
+  --color-navy-700: #2f5177;
+  --color-navy-800: #2b4259; /* logo wordmark */
+  --color-navy-900: #1c2e40;
+  --color-cream: #fbfdff;
+
+  --font-display: var(--font-display), "Cormorant Garamond", Georgia, serif;
+  --font-sans: var(--font-sans), "Manrope", system-ui, sans-serif;
+
+  --radius-xl2: 1.25rem;
+  --shadow-soft: 0 10px 30px -12px rgb(43 66 89 / 0.18);
+  --shadow-lift: 0 22px 50px -20px rgb(43 66 89 / 0.28);
+
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-drift: drift var(--dur, 14s) linear infinite;
+  --animate-spin-slow: spin 40s linear infinite;
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(2deg); }
+  }
+  @keyframes drift {
+    0% { transform: translate3d(0, -10vh, 0) rotate(0deg); opacity: 0; }
+    10% { opacity: var(--op, 0.9); }
+    90% { opacity: var(--op, 0.9); }
+    100% { transform: translate3d(var(--dx, 40px), 110vh, 0) rotate(var(--rot, 300deg)); opacity: 0; }
+  }
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--color-cream);
+  color: var(--color-navy-800);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, .font-display { font-family: var(--font-display); }
+
+::selection { background: var(--color-sky-300); color: var(--color-navy-900); }
+
+/* Reveal-on-scroll (driven by <Reveal/>) */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.is-visible { opacity: 1; transform: none; }
+
+/* Underline link animation */
+.link-underline { position: relative; }
+.link-underline::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 1.5px;
+  background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform .3s ease;
+}
+.link-underline:hover::after, .link-underline[aria-current="page"]::after { transform: scaleX(1); transform-origin: left; }
+
+/* Soft sky gradient background used by hero + section bands */
+.bg-sky-wash {
+  background:
+    radial-gradient(1200px 600px at 80% -10%, #ffffff 0%, rgb(255 255 255 / 0) 60%),
+    linear-gradient(180deg, var(--color-sky-300) 0%, var(--color-sky-200) 55%, var(--color-sky-100) 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .animate-float, .animate-drift, .animate-spin-slow { animation: none !important; }
+  html { scroll-behavior: auto; }
+}
