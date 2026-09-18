@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import "./globals.css";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
+import { TabBar } from "@/components/TabBar";
 import { site } from "@/data/site";
 import { organizationJsonLd } from "@/lib/jsonld";
 
@@ -60,6 +61,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Nav />
         <main className="flex-1">{children}</main>
         <Footer />
+        <TabBar />
       </body>
     </html>
   );

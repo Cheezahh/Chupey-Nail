@@ -2,13 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { site } from "@/data/site";
 import { Blossom } from "./Blossom";
-import { MobileMenu, type MenuLink } from "./MobileMenu";
 import { Button } from "./ui";
 
-const links: MenuLink[] = [
+const links = [
   { href: "/shop", label: "Shop" },
   { href: "/how-it-works", label: "How it works" },
   { href: "/book", label: "Book", badge: site.bookingLive ? undefined : "Soon" },
@@ -17,10 +16,6 @@ const links: MenuLink[] = [
 
 export function Nav() {
   const pathname = usePathname();
-  // The menu is "open" only for the route it was opened on, so a route change
-  // (link tap, back/forward) closes it with no effect needed.
-  const [openedOn, setOpenedOn] = useState<string | null>(null);
-  const open = openedOn === pathname;
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -29,13 +24,6 @@ export function Nav() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-  const close = useCallback(() => setOpenedOn(null), []);
-  useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [open]);
 
   return (
     <header
@@ -43,7 +31,7 @@ export function Nav() {
         scrolled ? "bg-white/85 shadow-soft backdrop-blur-md" : "bg-transparent"
       }`}
     >
-      <nav className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-5 sm:h-20 sm:px-8" aria-label="Main">
+      <nav className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4 sm:h-20 sm:px-8" aria-label="Main">
         <Link href="/" className="group flex items-center gap-2" aria-label={`${site.name} home`}>
           <Blossom size={40} className="transition-transform duration-500 group-hover:rotate-12" />
           <span className="font-display text-2xl font-medium leading-none text-navy-800">{site.name}</span>
@@ -72,24 +60,7 @@ export function Nav() {
             </Button>
           </li>
         </ul>
-
-        <button
-          type="button"
-          className="relative z-50 flex h-11 w-11 items-center justify-center rounded-full text-navy-800 md:hidden"
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          aria-label="Menu"
-          onClick={() => setOpenedOn(open ? null : pathname)}
-        >
-          <span className="relative block h-4 w-6">
-            <span className={`absolute left-0 top-0 h-0.5 w-6 rounded bg-current transition-transform duration-300 ${open ? "translate-y-[7px] rotate-45" : ""}`} />
-            <span className={`absolute left-0 top-[7px] h-0.5 w-6 rounded bg-current transition-opacity duration-200 ${open ? "opacity-0" : ""}`} />
-            <span className={`absolute left-0 top-[14px] h-0.5 w-6 rounded bg-current transition-transform duration-300 ${open ? "-translate-y-[7px] -rotate-45" : ""}`} />
-          </span>
-        </button>
       </nav>
-
-      <MobileMenu open={open} onClose={close} links={links} />
     </header>
   );
 }

@@ -5,11 +5,18 @@ import { useEffect, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { site } from "@/data/site";
 import { Blossom } from "./Blossom";
-import { Button } from "./ui";
 
 const subscribeNoop = () => () => {};
+const linkCls = "inline-flex min-h-11 items-center font-display text-4xl font-medium text-navy-800";
 
-export type MenuLink = { href: string; label: string; badge?: string };
+/** Small ↗ for links that leave the site. */
+const ExternalMark = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" className="ml-2 opacity-50" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+    <path d="M7 17 17 7M9 7h8v8" />
+  </svg>
+);
+
+export type MenuLink = { href: string; label: string; badge?: string; external?: boolean };
 
 type Props = {
   open: boolean;
@@ -25,12 +32,19 @@ type Props = {
  * for `position: fixed` descendants — so `fixed inset-0` would fill a 64px bar
  * instead of the screen. Portalling sidesteps that entirely.
  *
- * Opening/closing and body-scroll lock are owned by the parent (<Nav/>).
+ * Open state is owned by the parent (<TabBar/>); the body-scroll lock lives here.
  */
 export function MobileMenu({ open, onClose, links }: Props) {
   // Portals need document.body, which doesn't exist during SSR.
   // false on the server + first hydration pass, true on the client after that.
   const mounted = useSyncExternalStore(subscribeNoop, () => true, () => false);
+
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
 
   useEffect(() => {
     if (!open) return;
@@ -81,30 +95,24 @@ export function MobileMenu({ open, onClose, links }: Props) {
               }`}
               style={{ transitionDelay: `${80 + i * 60}ms` }}
             >
-              <Link
-                href={l.href}
-                onClick={onClose}
-                className="inline-flex min-h-11 items-center font-display text-4xl font-medium text-navy-800"
-              >
-                {l.label}
-                {l.badge && (
-                  <span className="ml-3 rounded-full bg-white/70 px-2 py-0.5 font-sans text-xs uppercase tracking-wider">
-                    {l.badge}
-                  </span>
-                )}
-              </Link>
+              {l.external ? (
+                <a href={l.href} target={l.href.startsWith("http") ? "_blank" : undefined} rel="noopener" onClick={onClose} className={linkCls}>
+                  {l.label}
+                  <ExternalMark />
+                </a>
+              ) : (
+                <Link href={l.href} onClick={onClose} className={linkCls}>
+                  {l.label}
+                  {l.badge && (
+                    <span className="ml-3 rounded-full bg-white/70 px-2 py-0.5 font-sans text-xs uppercase tracking-wider">
+                      {l.badge}
+                    </span>
+                  )}
+                </Link>
+              )}
             </li>
           ))}
         </ul>
-        <div
-          className={`mt-10 transition-all duration-500 motion-reduce:transition-none ${open ? "opacity-100" : "opacity-0"}`}
-          style={{ transitionDelay: "360ms" }}
-          onClick={onClose}
-        >
-          <Button href="/order" size="lg" className="w-full">
-            Order a set
-          </Button>
-        </div>
       </div>
     </div>,
     document.body,

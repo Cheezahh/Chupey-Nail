@@ -36,7 +36,7 @@ export function Button({ variant = "primary", size = "md", href, className = "",
 }
 
 export function Container({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <div className={`mx-auto w-full max-w-6xl px-5 sm:px-8 ${className}`}>{children}</div>;
+  return <div className={`mx-auto w-full max-w-6xl px-4 sm:px-8 ${className}`}>{children}</div>;
 }
 
 export function Eyebrow({ children, className = "" }: { children: ReactNode; className?: string }) {

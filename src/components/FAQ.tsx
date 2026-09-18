@@ -13,7 +13,7 @@ export function FAQ() {
           <div key={f.q}>
             <button
               type="button"
-              className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
+              className="flex w-full items-center justify-between gap-4 px-5 py-5 text-left sm:px-6"
               aria-expanded={isOpen}
               aria-controls={`faq-${i}`}
               onClick={() => setOpen(isOpen ? null : i)}
@@ -29,7 +29,7 @@ export function FAQ() {
               style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}
             >
               <div className="overflow-hidden">
-                <p className="px-6 pb-6 text-sm leading-relaxed text-navy-700">{f.a}</p>
+                <p className="px-5 pb-6 text-base leading-relaxed text-navy-700 sm:px-6 sm:text-sm">{f.a}</p>
               </div>
             </div>
           </div>

@@ -28,11 +28,11 @@ export function SizingGuide() {
   const summary = all.map((a) => (a.v === null ? "–" : a.v)).join(" ");
 
   return (
-    <div className="rounded-3xl bg-white p-6 shadow-soft ring-1 ring-navy-800/8 sm:p-8">
+    <div className="rounded-3xl bg-white p-5 shadow-soft ring-1 ring-navy-800/8 sm:p-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <p className="font-display text-2xl font-medium text-navy-800">Find your sizes at home</p>
-          <p className="text-sm text-navy-500">Measure the widest part of each nail in millimetres.</p>
+          <p className="text-base text-navy-500 sm:text-sm">Measure the widest part of each nail in millimetres.</p>
         </div>
         <div className="flex rounded-full bg-sky-100 p-1" role="tablist" aria-label="Hand">
           {(["left", "right"] as const).map((h) => (
@@ -41,7 +41,7 @@ export function SizingGuide() {
               role="tab"
               aria-selected={hand === h}
               onClick={() => setHand(h)}
-              className={`rounded-full px-4 py-1.5 text-sm font-semibold capitalize transition ${hand === h ? "bg-navy-800 text-white shadow-soft" : "text-navy-700"}`}
+              className={`min-h-11 rounded-full px-4 py-1.5 text-sm font-semibold capitalize transition sm:min-h-0 ${hand === h ? "bg-navy-800 text-white shadow-soft" : "text-navy-700"}`}
             >
               {h}
             </button>
@@ -84,12 +84,12 @@ export function SizingGuide() {
           type="button"
           disabled={done === 0}
           onClick={() => navigator.clipboard?.writeText(summary)}
-          className="rounded-full bg-sky-300 px-4 py-2 text-sm font-semibold text-navy-900 transition hover:bg-sky-400 disabled:opacity-40"
+          className="min-h-11 rounded-full bg-sky-300 px-4 py-2 text-sm font-semibold text-navy-900 transition hover:bg-sky-400 disabled:opacity-40"
         >
           Copy for your order
         </button>
       </div>
-      <p className="mt-3 text-xs text-navy-500">
+      <p className="mt-3 text-sm text-navy-500 sm:text-xs">
         Sizes run 0 (widest) to 9 (narrowest). Between sizes? Round down for a snug fit — press-ons stay on better slightly small than slightly wide.
       </p>
     </div>

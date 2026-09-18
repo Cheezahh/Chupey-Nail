@@ -1,12 +1,16 @@
 "use client";
 
-import { useMemo, useState, type FormEvent } from "react";
+import { useMemo, useState, useSyncExternalStore, type FormEvent } from "react";
+import { createPortal } from "react-dom";
 import { optionGroups, tiers } from "@/data/products";
 import { site } from "@/data/site";
 import { money } from "@/lib/format";
 import { Button } from "./ui";
 
 type State = "idle" | "sending" | "sent" | "error";
+
+const FORM_ID = "order-form";
+const subscribeNoop = () => () => {};
 
 /**
  * "Build your set" order request. No payment here — the business confirms
@@ -52,7 +56,7 @@ export function OrderForm({ initialTier }: { initialTier?: string }) {
   }
 
   return (
-    <form onSubmit={onSubmit} className="grid gap-8 lg:grid-cols-[1fr_340px]">
+    <form id={FORM_ID} onSubmit={onSubmit} className="grid gap-8 pb-28 md:pb-0 lg:grid-cols-[1fr_340px]">
       <div className="space-y-8">
         {/* Tier */}
         <Fieldset legend="1 · Pick your tier">
@@ -128,8 +132,8 @@ export function OrderForm({ initialTier }: { initialTier?: string }) {
         </Fieldset>
       </div>
 
-      {/* Summary */}
-      <aside className="h-fit rounded-3xl bg-navy-800 p-6 text-white shadow-lift lg:sticky lg:top-24">
+      {/* Summary — full panel from md up; phones get the fixed strip below */}
+      <aside className="hidden h-fit rounded-3xl bg-navy-800 p-6 text-white shadow-lift md:block lg:sticky lg:top-24">
         <p className="text-xs uppercase tracking-[0.22em] text-sky-300">Your set</p>
         <p className="mt-2 font-display text-4xl">{t.name}</p>
         <dl className="mt-4 space-y-2 text-sm">
@@ -155,7 +159,38 @@ export function OrderForm({ initialTier }: { initialTier?: string }) {
         </Button>
         <p className="mt-3 text-center text-[11px] text-sky-200/60">No payment taken on this site.</p>
       </aside>
+
+      <MobileSummaryBar tierName={t.name} price={money(t.price)} sending={state === "sending"} error={state === "error" ? error : ""} />
     </form>
+  );
+}
+
+/**
+ * Phone-only summary strip, fixed just above the tab bar. Portalled to <body>
+ * so no ancestor transform (e.g. <Reveal/>) can hijack its positioning; the
+ * button submits via the form attribute instead of DOM nesting.
+ */
+function MobileSummaryBar({ tierName, price, sending, error }: { tierName: string; price: string; sending: boolean; error: string }) {
+  const mounted = useSyncExternalStore(subscribeNoop, () => true, () => false);
+  if (!mounted) return null;
+  return createPortal(
+    <div className="fixed inset-x-0 bottom-[calc(4rem+env(safe-area-inset-bottom))] z-40 px-3 pb-8 md:hidden">
+      <div className="rounded-2xl bg-navy-800 p-3 text-white shadow-lift">
+        {error && <p className="mb-2 rounded-xl bg-red-500/20 px-3 py-2 text-xs text-red-100">{error}</p>}
+        <div className="flex items-center justify-between gap-3">
+          <div className="min-w-0 pl-1">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-sky-300">Your set</p>
+            <p className="truncate font-display text-2xl leading-tight">
+              {tierName} <span className="text-sky-200/80">· {price}</span>
+            </p>
+          </div>
+          <Button type="submit" form={FORM_ID} variant="sky" size="md" className="min-h-11 shrink-0" disabled={sending}>
+            {sending ? "Sending…" : "Send order request"}
+          </Button>
+        </div>
+      </div>
+    </div>,
+    document.body,
   );
 }
 
@@ -168,7 +203,7 @@ const pill = (on: boolean, extra = "") =>
 
 function Fieldset({ legend, hint, children }: { legend: string; hint?: string; children: React.ReactNode }) {
   return (
-    <fieldset className="rounded-3xl bg-white p-6 shadow-soft ring-1 ring-navy-800/8">
+    <fieldset className="rounded-3xl bg-white p-5 shadow-soft ring-1 ring-navy-800/8 sm:p-6">
       <legend className="sr-only">{legend}</legend>
       <p className="mb-1 font-display text-2xl font-medium text-navy-800">{legend}</p>
       {hint && <p className="mb-4 text-xs text-navy-500">{hint}</p>}
@@ -184,7 +219,7 @@ export function Input({ label, className = "", ...rest }: { label: string } & Re
       <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-navy-500">{label}</span>
       <input
         {...rest}
-        className="w-full rounded-xl border border-navy-800/15 bg-sky-50/50 px-4 py-3 text-sm text-navy-800 outline-none transition placeholder:text-navy-800/30 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-300"
+        className="w-full rounded-xl border border-navy-800/15 bg-sky-50/50 px-4 py-3 text-base text-navy-800 outline-none transition placeholder:text-navy-800/30 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-300 sm:text-sm"
       />
     </label>
   );
@@ -197,7 +232,7 @@ function Textarea({ label, ...rest }: { label: string } & React.ComponentProps<"
       <textarea
         rows={4}
         {...rest}
-        className="w-full rounded-xl border border-navy-800/15 bg-sky-50/50 px-4 py-3 text-sm text-navy-800 outline-none transition placeholder:text-navy-800/30 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-300"
+        className="w-full rounded-xl border border-navy-800/15 bg-sky-50/50 px-4 py-3 text-base text-navy-800 outline-none transition placeholder:text-navy-800/30 focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-300 sm:text-sm"
       />
     </label>
   );

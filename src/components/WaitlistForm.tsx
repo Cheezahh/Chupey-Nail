@@ -26,7 +26,7 @@ export function WaitlistForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="rounded-3xl bg-white p-6 shadow-soft ring-1 ring-navy-800/8 sm:p-8">
+    <form onSubmit={onSubmit} className="rounded-3xl bg-white p-5 shadow-soft ring-1 ring-navy-800/8 sm:p-8">
       <div className="grid gap-x-4 sm:grid-cols-2">
         <Input name="name" label="Name" required autoComplete="name" className="mt-0" />
         <Input name="email" label="Email" type="email" required autoComplete="email" className="mt-4 sm:mt-0" />
@@ -37,7 +37,7 @@ export function WaitlistForm() {
           name="area"
           required
           defaultValue=""
-          className="w-full rounded-xl border border-navy-800/15 bg-sky-50/50 px-4 py-3 text-sm text-navy-800 outline-none focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-300"
+          className="w-full rounded-xl border border-navy-800/15 bg-sky-50/50 px-4 py-3 text-base text-navy-800 outline-none focus:border-sky-500 focus:bg-white focus:ring-2 focus:ring-sky-300 sm:text-sm"
         >
           <option value="" disabled>
             Choose an area

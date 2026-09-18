@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type TouchEvent } from "react";
+import { createPortal } from "react-dom";
 import { designs, tiers, type Design } from "@/data/products";
 import { Blossom } from "./Blossom";
 
@@ -20,6 +21,19 @@ export function Gallery({ limit }: { limit?: number }) {
     (dir: 1 | -1) => setActive((a) => (a === null ? a : (a + dir + items.length) % items.length)),
     [items.length],
   );
+
+  // Swipe left/right to change designs (touch only; ~40px horizontal threshold).
+  const touch = useRef<{ x: number; y: number } | null>(null);
+  const onTouchStart = (e: TouchEvent) => {
+    touch.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  };
+  const onTouchEnd = (e: TouchEvent) => {
+    if (!touch.current) return;
+    const dx = e.changedTouches[0].clientX - touch.current.x;
+    const dy = e.changedTouches[0].clientY - touch.current.y;
+    touch.current = null;
+    if (Math.abs(dx) >= 40 && Math.abs(dx) > Math.abs(dy)) step(dx < 0 ? 1 : -1);
+  };
 
   useEffect(() => {
     if (active === null) return;
@@ -46,7 +60,7 @@ export function Gallery({ limit }: { limit?: number }) {
               role="tab"
               aria-selected={filter === t.slug}
               onClick={() => setFilter(t.slug)}
-              className={`rounded-full px-4 py-2 text-sm font-semibold transition-all ${
+              className={`min-h-11 rounded-full px-4 py-2 text-sm font-semibold transition-all sm:min-h-0 ${
                 filter === t.slug ? "bg-navy-800 text-white shadow-soft" : "bg-white text-navy-700 ring-1 ring-navy-800/15 hover:ring-navy-800/40"
               }`}
             >
@@ -75,33 +89,39 @@ export function Gallery({ limit }: { limit?: number }) {
         ))}
       </ul>
 
-      {active !== null && items[active] && (
+      {/* Portalled: a transforming ancestor (e.g. <Reveal/> mid-animation) would otherwise
+          become the containing block for position: fixed. Only renders client-side. */}
+      {active !== null && items[active] && createPortal(
         <div
           role="dialog"
           aria-modal="true"
           aria-label={items[active].title}
-          className="fixed inset-0 z-[60] flex items-center justify-center bg-navy-900/85 p-4 backdrop-blur-sm"
+          className="fixed inset-0 z-[60] flex h-[100dvh] flex-col bg-navy-900/85 backdrop-blur-sm md:h-auto md:items-center md:justify-center md:p-4"
           onClick={close}
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
         >
-          <div className="relative w-full max-w-2xl" onClick={(e) => e.stopPropagation()}>
-            <div className="overflow-hidden rounded-3xl shadow-lift">
+          <div className="relative flex h-full w-full flex-col md:block md:h-auto md:max-w-2xl" onClick={(e) => e.stopPropagation()}>
+            {/* Image centred in the free space; caption + controls pinned to the bottom row on phones */}
+            <div className="my-auto overflow-hidden md:my-0 md:rounded-3xl md:shadow-lift">
               <Tile design={items[active]} large />
             </div>
-            <div className="mt-4 flex items-center justify-between text-white">
-              <div>
+            <div className="flex flex-col gap-4 px-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-4 text-white md:mt-4 md:flex-row md:items-center md:justify-between md:px-0 md:pb-0 md:pt-0">
+              <div className="text-center md:text-left">
                 <p className="font-display text-2xl">{items[active].title}</p>
                 <p className="text-xs uppercase tracking-wider text-sky-200">
                   {tierName(items[active].tier)} · {items[active].tags.join(" · ")}
                 </p>
               </div>
-              <div className="flex gap-2">
+              <div className="flex justify-center gap-3 md:gap-2">
                 <LightboxBtn onClick={() => step(-1)} label="Previous">‹</LightboxBtn>
                 <LightboxBtn onClick={() => step(1)} label="Next">›</LightboxBtn>
                 <LightboxBtn onClick={close} label="Close">×</LightboxBtn>
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
     </div>
   );
@@ -115,7 +135,7 @@ function LightboxBtn({ children, onClick, label }: { children: React.ReactNode; 
       type="button"
       onClick={onClick}
       aria-label={label}
-      className="flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-2xl leading-none transition hover:bg-white/25"
+      className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-2xl leading-none transition hover:bg-white/25 focus-visible:outline-2 focus-visible:outline-sky-300 md:h-11 md:w-11"
     >
       {children}
     </button>

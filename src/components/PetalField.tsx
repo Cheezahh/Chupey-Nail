@@ -18,14 +18,16 @@ const useMounted = () => useSyncExternalStore(subscribe, () => true, () => false
  * mount so server/client markup never disagrees, and skipped entirely when
  * the user prefers reduced motion.
  */
-export function PetalField({ count = 14, className = "" }: { count?: number; className?: string }) {
+export function PetalField({ count = 14, mobileCount, className = "" }: { count?: number; mobileCount?: number; className?: string }) {
   const mounted = useMounted();
 
   const petals = useMemo(() => {
     if (!mounted || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return [];
+    // Fewer petals below md (matches Tailwind's md breakpoint); not re-evaluated on resize.
+    const n = mobileCount !== undefined && window.matchMedia("(max-width: 767px)").matches ? mobileCount : count;
     // Deterministic pseudo-random (pure) so the layout is stable between renders.
-    const rnd = seeded(count * 7919);
-    return Array.from({ length: count }, () => ({
+    const rnd = seeded(n * 7919);
+    return Array.from({ length: n }, () => ({
       left: rnd() * 100,
       dur: 12 + rnd() * 14,
       delay: -rnd() * 20,
@@ -34,7 +36,7 @@ export function PetalField({ count = 14, className = "" }: { count?: number; cla
       rot: 180 + rnd() * 360,
       op: 0.5 + rnd() * 0.4,
     }));
-  }, [mounted, count]);
+  }, [mounted, count, mobileCount]);
 
   return (
     <div aria-hidden="true" className={`pointer-events-none absolute inset-0 overflow-hidden ${className}`}>

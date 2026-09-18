@@ -22,15 +22,15 @@ export default function Home() {
     <>
       {/* ───────── Hero ───────── */}
       <section className="relative -mt-16 overflow-hidden bg-sky-wash pt-16 sm:-mt-20 sm:pt-20">
-        <PetalField count={16} />
+        <PetalField count={16} mobileCount={8} />
         <Branch className="absolute -left-6 bottom-6 hidden md:block" scale={1.15} />
         <Branch className="absolute right-0 top-28 hidden md:block" flip scale={1.15} />
         <Container className="relative flex min-h-[calc(100svh-4rem)] flex-col items-center justify-center py-20 text-center sm:min-h-[calc(100svh-5rem)]">
           <Reveal>
-            <Eyebrow className="text-navy-700">Hand-made in Scarborough · Shipping Canada-wide</Eyebrow>
+            <Eyebrow className="text-[11px] tracking-[0.18em] text-navy-700 sm:text-xs sm:tracking-[0.22em]">Hand-made in Scarborough · Shipping Canada-wide</Eyebrow>
           </Reveal>
           <Reveal delay={100}>
-            <Heading as="h1" className="max-w-4xl">
+            <Heading as="h1" className="max-w-4xl !text-4xl sm:!text-6xl lg:!text-7xl">
               Press-on nails that look <em className="font-normal italic text-navy-700">salon-fresh</em>, from your kitchen table.
             </Heading>
           </Reveal>
@@ -39,11 +39,11 @@ export default function Home() {
               Three tiers, one artist, every nail painted by hand. Order a set today — in-person appointments are opening soon.
             </p>
           </Reveal>
-          <Reveal delay={300} className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <Button href="/shop" size="lg">
+          <Reveal delay={300} className="mt-9 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+            <Button href="/shop" size="lg" className="w-full sm:w-auto">
               Shop the tiers
             </Button>
-            <Button href="/how-it-works" variant="secondary" size="lg">
+            <Button href="/how-it-works" variant="secondary" size="lg" className="w-full sm:w-auto">
               How it works
             </Button>
           </Reveal>
